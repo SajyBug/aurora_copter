@@ -27,3 +27,8 @@
 *.exe
 *.out
 *.app
+
+*.*~
+Aurora_Copter/
+Aurora_Copter/nbproject/
+Aurora_Copter/nbproject/private/
