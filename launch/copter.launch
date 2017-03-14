@@ -1,0 +1,4 @@
+<launch>
+	 <node name="copter_frame" pkg="aurora_copter" type="copter_frame" output="screen"> </node>
+	 <node name="copter_visualization" pkg="aurora_copter" type="copter_visualization" output="screen"> </node>
+</launch>
