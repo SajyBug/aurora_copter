@@ -1,3 +1,13 @@
+/* 
+ * @File:     camera_frame.cpp
+ * @Author:   Sajjad Rahnama
+ * 
+ * @Project:  Aurora
+ * @Version:  1.0 - Iran Open 2017
+ * 
+ * @Created Oct 12, 2016
+ */
+
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
 #include <geometry_msgs/PoseStamped.h>

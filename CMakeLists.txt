@@ -137,6 +137,7 @@ add_executable(vision_opencv_node src/vision_opencv_node.cpp)
 add_executable(camera_topic src/camera_topic.cpp)
 add_executable(copter_visualization src/copter_visualization.cpp)
 add_executable(copter_frame src/copter_frame.cpp)
+add_executable(opencv_train_cascade src/opencv_train_cascade.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -156,6 +157,10 @@ target_link_libraries(copter_visualization
 )
 target_link_libraries(copter_frame
   ${catkin_LIBRARIES}
+)
+target_link_libraries(opencv_train_cascade
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
 )
 #############
 ## Install ##

@@ -1,8 +1,11 @@
-/*
- * camera_topic.cpp
- *
- *  Created on: Oct 12, 2016
- *      Author: sajjad_rahnama
+/* 
+ * @File:     camera_topic.cpp
+ * @Author:   Sajjad Rahnama
+ * 
+ * @Project:  Aurora
+ * @Version:  1.0 - Iran Open 2017
+ * 
+ * @Created Oct 12, 2016
  */
 
 #include <ros/ros.h>
@@ -25,7 +28,8 @@ int main(int argc, char** argv)
   image_pub_ = it_.advertise("/raspberry_pi/image_raw", 1);
   cv_bridge::CvImage Cvptr;
   Cvptr.encoding = sensor_msgs::image_encodings::BGR8;
-  VideoCapture cap("http://192.168.43.92:8080/?action=stream.mjpg");
+//VideoCapture cap("http://192.168.7.10:8080/?action=stream.mjpg");
+  VideoCapture cap("http://192.168.43.137:4747/mjpegfeed?320x240.mjpeg");
   while (cap.isOpened())
   {
     cap >> frame;
