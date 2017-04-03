@@ -28,8 +28,9 @@ int main(int argc, char** argv)
   image_pub_ = it_.advertise("/raspberry_pi/image_raw", 1);
   cv_bridge::CvImage Cvptr;
   Cvptr.encoding = sensor_msgs::image_encodings::BGR8;
-//VideoCapture cap("http://192.168.7.10:8080/?action=stream.mjpg");
-  VideoCapture cap("http://192.168.43.137:4747/mjpegfeed?320x240.mjpeg");
+VideoCapture cap("http://192.168.7.10:8080/?action=stream.mjpg");
+ // VideoCapture cap("http://192.168.43.137:4747/mjpegfeed?320x240.mjpeg");
+//VideoCapture cap("http://192.168.7.104:4747/mjpegfeed?320x240.mjpeg");
   while (cap.isOpened())
   {
     cap >> frame;

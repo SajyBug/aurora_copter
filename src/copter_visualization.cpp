@@ -24,6 +24,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
+#include <std_msgs/String.h>
 
 // parameters
 static std::string fixed_frame_id;
@@ -36,7 +37,58 @@ ros::Publisher track_marker_pub;
 ros::Publisher vehicle_marker_pub;
 
 boost::shared_ptr<visualization_msgs::MarkerArray> vehicle_marker;
-ros::Publisher marker_pub;
+ros::Publisher line_marker_pub;
+ros::Subscriber shapes_sub;
+ros::Publisher shapes_marker_pub;
+
+bool traingle_detect = false;
+bool square_detect = false;
+bool circle_detect = false;
+bool pentagon_detect = false;
+bool star_detect = false;
+bool heart_detect = false;
+
+std::string TRIANGLE = "triangle";
+std::string SQUARE = "square";
+std::string CIRCLE = "circle";
+std::string PENTAGON = "pentagon";
+std::string STAR = "star";
+std::string HEART = "heart";
+
+void shapesCallback(const std_msgs::String &msg)
+{
+  std::string tmp(msg.data.c_str());
+  if (tmp == TRIANGLE)
+  {
+    traingle_detect = true;
+  }
+
+  if (tmp == SQUARE)
+  {
+    square_detect = true;
+  }
+
+  if (tmp == CIRCLE)
+  {
+    circle_detect = true;
+  }
+
+  if (tmp == PENTAGON)
+  {
+    pentagon_detect = true;
+  }
+
+  if (tmp == STAR)
+  {
+    star_detect = true;
+  }
+
+  if (tmp == HEART)
+  {
+    heart_detect = true;
+  }
+
+}
 
 /**
  * @brief publish vehicle track
@@ -45,6 +97,13 @@ static void publish_track_marker(const geometry_msgs::PoseStamped::ConstPtr &pos
 {
   static boost::shared_ptr<visualization_msgs::Marker> track_marker;
   static boost::shared_ptr<visualization_msgs::Marker> line_marker;
+
+  static boost::shared_ptr<visualization_msgs::Marker> traingle_marker;
+  static boost::shared_ptr<visualization_msgs::Marker> square_marker;
+  static boost::shared_ptr<visualization_msgs::Marker> circle_marker;
+  static boost::shared_ptr<visualization_msgs::Marker> pentagon_marker;
+  static boost::shared_ptr<visualization_msgs::Marker> star_marker;
+  static boost::shared_ptr<visualization_msgs::Marker> heart_marker;
 
   if (!track_marker)
   {
@@ -61,23 +120,94 @@ static void publish_track_marker(const geometry_msgs::PoseStamped::ConstPtr &pos
     track_marker->color.b = 0.5;
     track_marker->points.reserve(max_track_size);
 
-
     line_marker = boost::make_shared<visualization_msgs::Marker>();
-    //    line_marker->header.frame_id = "fcu";
-    //    line_marker->header.stamp = ros::Time::now();
     line_marker->ns = "fcu1";
     line_marker->action = visualization_msgs::Marker::ADD;
     line_marker->pose.orientation.w = 1.0;
-    //    line_marker->id = 0;
     line_marker->type = visualization_msgs::Marker::LINE_STRIP;
     line_marker->scale.x = 0.4;
     line_marker->scale.y = 0.4;
     line_marker->scale.z = 0.4;
     line_marker->color.r = 1.0;
     line_marker->color.a = 1.0;
-    //    line_marker->points.reserve(max_track_size);
 
+    //traingle
+    traingle_marker = boost::make_shared<visualization_msgs::Marker>();
+    traingle_marker->type = visualization_msgs::Marker::CUBE_LIST;
+    traingle_marker->ns = "fcu2";
+    traingle_marker->action = visualization_msgs::Marker::ADD;
+    traingle_marker->scale.x = 0.5;
+    traingle_marker->scale.y = 0.5;
+    traingle_marker->scale.z = 0.5;
+    traingle_marker->color.a = 1.0;
+    traingle_marker->color.r = 1.0;
+    traingle_marker->color.g = 0.5;
+    traingle_marker->color.b = 0.5;
 
+    //square
+    square_marker = boost::make_shared<visualization_msgs::Marker>();
+    square_marker->type = visualization_msgs::Marker::CUBE_LIST;
+    square_marker->ns = "fcu3";
+    square_marker->action = visualization_msgs::Marker::ADD;
+    square_marker->scale.x = 0.5;
+    square_marker->scale.y = 0.5;
+    square_marker->scale.z = 0.5;
+    square_marker->color.a = 1.0;
+    square_marker->color.r = 0.3;
+    square_marker->color.g = 0.2;
+    square_marker->color.b = 0.1;
+
+    //circle
+    circle_marker = boost::make_shared<visualization_msgs::Marker>();
+    circle_marker->type = visualization_msgs::Marker::CUBE_LIST;
+    circle_marker->ns = "fcu4";
+    circle_marker->action = visualization_msgs::Marker::ADD;
+    circle_marker->scale.x = 0.5;
+    circle_marker->scale.y = 0.5;
+    circle_marker->scale.z = 0.5;
+    circle_marker->color.a = 1.0;
+    circle_marker->color.r = 0.1;
+    circle_marker->color.g = 0.2;
+    circle_marker->color.b = 0.3;
+
+    //pentagon
+    pentagon_marker = boost::make_shared<visualization_msgs::Marker>();
+    pentagon_marker->type = visualization_msgs::Marker::CUBE_LIST;
+    pentagon_marker->ns = "fcu5";
+    pentagon_marker->action = visualization_msgs::Marker::ADD;
+    pentagon_marker->scale.x = 0.5;
+    pentagon_marker->scale.y = 0.5;
+    pentagon_marker->scale.z = 0.5;
+    pentagon_marker->color.a = 1.0;
+    pentagon_marker->color.r = 0.6;
+    pentagon_marker->color.g = 0.8;
+    pentagon_marker->color.b = 0.9;
+
+    //star
+    star_marker = boost::make_shared<visualization_msgs::Marker>();
+    star_marker->type = visualization_msgs::Marker::CUBE_LIST;
+    star_marker->ns = "fcu6";
+    star_marker->action = visualization_msgs::Marker::ADD;
+    star_marker->scale.x = 0.5;
+    star_marker->scale.y = 0.5;
+    star_marker->scale.z = 0.5;
+    star_marker->color.a = 1.0;
+    star_marker->color.r = 0.7;
+    star_marker->color.g = 0.6;
+    star_marker->color.b = 0.8;
+
+    //heart
+    heart_marker = boost::make_shared<visualization_msgs::Marker>();
+    heart_marker->type = visualization_msgs::Marker::CUBE_LIST;
+    heart_marker->ns = "fcu7";
+    heart_marker->action = visualization_msgs::Marker::ADD;
+    heart_marker->scale.x = 0.5;
+    heart_marker->scale.y = 0.5;
+    heart_marker->scale.z = 0.5;
+    heart_marker->color.a = 1.0;
+    heart_marker->color.r = 0.8;
+    heart_marker->color.g = 0.6;
+    heart_marker->color.b = 0.8;
   }
 
   static int marker_idx = 0;
@@ -93,7 +223,62 @@ static void publish_track_marker(const geometry_msgs::PoseStamped::ConstPtr &pos
 
   line_marker->header = pose->header;
   line_marker->points.push_back(pose->pose.position);
-  marker_pub.publish(line_marker);
+  line_marker_pub.publish(line_marker);
+
+  if (traingle_detect)
+  {
+    traingle_marker->header = pose->header;
+    traingle_marker->points.push_back(pose->pose.position);
+    shapes_marker_pub.publish(traingle_marker);
+//    ROS_INFO("I heard: [%s]", "triangle");
+  }
+
+  if (square_detect)
+  {
+    square_marker->header = pose->header;
+    square_marker->points.push_back(pose->pose.position);
+    shapes_marker_pub.publish(square_marker);
+//    ROS_INFO("I heard: [%s]", "square");
+  }
+
+  if (circle_detect)
+  {
+    circle_marker->header = pose->header;
+    circle_marker->points.push_back(pose->pose.position);
+    shapes_marker_pub.publish(circle_marker);
+//    ROS_INFO("I heard: [%s]", "circle");
+  }
+
+  if (pentagon_detect)
+  {
+    pentagon_marker->header = pose->header;
+    pentagon_marker->points.push_back(pose->pose.position);
+    shapes_marker_pub.publish(pentagon_marker);
+//    ROS_INFO("I heard: [%s]", "pentagon");
+  }
+
+  if (star_detect)
+  {
+    star_marker->header = pose->header;
+    star_marker->points.push_back(pose->pose.position);
+    shapes_marker_pub.publish(star_marker);
+//    ROS_INFO("I heard: [%s]", "star");
+  }
+
+  if (heart_detect)
+  {
+    heart_marker->header = pose->header;
+    heart_marker->points.push_back(pose->pose.position);
+    shapes_marker_pub.publish(heart_marker);
+//    ROS_INFO("I heard: [%s]", "heart");
+  }
+
+  traingle_detect = false;
+  square_detect = false;
+  circle_detect = false;
+  pentagon_detect = false;
+  star_detect = false;
+  heart_detect = false;
 }
 
 /**
@@ -213,8 +398,10 @@ int main(int argc, char *argv[])
 
   track_marker_pub = nh.advertise<visualization_msgs::Marker>("track_markers", 10);
   vehicle_marker_pub = nh.advertise<visualization_msgs::MarkerArray>("vehicle_marker", 10);
-  marker_pub = nh.advertise<visualization_msgs::Marker>("visualization_marker", 10);
+  line_marker_pub = nh.advertise<visualization_msgs::Marker>("line_marker", 10);
+  shapes_marker_pub = nh.advertise<visualization_msgs::Marker>("shapes_marker", 10);
   auto pos_sub = nh.subscribe("/mavros/local_position/pose", 10, local_position_sub_cb);
+  shapes_sub = nh.subscribe("shapes", 10, shapesCallback);
 
   ros::spin();
   return 0;
